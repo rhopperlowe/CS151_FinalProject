@@ -15,7 +15,7 @@ public class EnemyShape implements SceneShape {
         this.x = x;
         this.y = y;
         try {
-            enemyimage = ImageIO.read(new File("/home/seb/IdeaProjects/CS151SebastianMora/CS151SebastianMora/Drone/resources/enemy.png"));
+            enemyimage = ImageIO.read(new File("resources/enemy.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,11 +32,16 @@ public class EnemyShape implements SceneShape {
     @Override
     public void draw(Graphics2D g2) {
         g2.drawImage(enemyimage, x, y, 50, 50, null);
+        g2.drawRect(x,y,50,50); // used for debugging collison
 
     }
 
     @Override
     public boolean contains(Point2D p) {
+
+        if( (p.getX() >= x && p.getY() >= y)  && (p.getX() <= x+50 && p.getY() <= y+50))
+            return true;
+
         return false;
     }
 

@@ -17,7 +17,7 @@ public class DroneShape implements SceneShape {
         this.x = x;
         this.y = y;
         try {
-            droneimage = ImageIO.read(new File("/home/seb/IdeaProjects/CS151SebastianMora/CS151SebastianMora/Drone/resources/drone.jpg"));
+            droneimage = ImageIO.read(new File("resources/drone.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,6 +34,7 @@ public class DroneShape implements SceneShape {
     @Override
     public void draw(Graphics2D g2) {
         g2.drawImage(droneimage,x,y,50,50,null);
+        g2.drawRect(x,y,45,45); // used for debugging collison
     }
 
     @Override

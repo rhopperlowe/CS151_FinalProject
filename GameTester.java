@@ -22,7 +22,7 @@ public class GameTester
 
         DroneShape drone = new DroneShape(20,20);
 
-        for(int i=0; i < 6; i++){
+        for(int i=0; i < 2; i++){
             scene.add(new EnemyShape(300,i*50));
         }
 
@@ -45,31 +45,27 @@ public class GameTester
             }
         });
 
-
-
-
         scene.add(drone);
-
-
         frame.add(scene, BorderLayout.CENTER);
         frame.setSize(500, 500);
         frame.setVisible(true);
+
 
         final int DELAY = 50;
         // Milliseconds between timer ticks
         Timer t = new Timer(DELAY, event ->
         {
             scene.moveEnemys();
+
             scene.repaint();
         });
         t.start();
 
-
     }
 
-    private void step() {
-        
-    }
+
+
+
 }
 
 

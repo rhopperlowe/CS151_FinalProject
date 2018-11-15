@@ -8,8 +8,11 @@ import java.util.*;
 /**
  A component that shows a scene composed of shapes.
  */
+
 public class SceneComponent extends JComponent
 {
+    private DroneShape drone;
+
     public SceneComponent()
     {
         shapes = new ArrayList<SceneShape>();
@@ -23,7 +26,12 @@ public class SceneComponent extends JComponent
      */
     public void add(SceneShape s)
     {
-        shapes.add(s);
+        if(s instanceof DroneShape){
+            drone = (DroneShape) s;
+        }
+
+        else
+            shapes.add(s);
 
     }
 
@@ -39,7 +47,11 @@ public class SceneComponent extends JComponent
         for(SceneShape s : shapes){
             if(s instanceof EnemyShape){
                 s.move();
+                if(s.contains(new Point2D.Double(drone.getX(),drone.getY())))
+                    System.out.println("DRONE HIT");
+
             }
+
         }
     }
 
@@ -47,6 +59,8 @@ public class SceneComponent extends JComponent
     {
 
         Graphics2D g2 = (Graphics2D) g;
+
+        drone.draw(g2);
         for (SceneShape s : shapes)
         {
             s.draw(g2);
