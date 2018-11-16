@@ -11,12 +11,13 @@ import java.util.*;
 
 public class SceneComponent extends JComponent
 {
-    private DroneShape drone;
+    private DroneShape 						drone;
+    private ArrayList<EnemyShape>			enemies;	
 
-    public SceneComponent()
+    public SceneComponent(DroneShape drone)
     {
-        shapes = new ArrayList<SceneShape>();
-
+    	this.drone = drone;
+        this.enemies = new ArrayList<>();
     }
 
 
@@ -24,15 +25,13 @@ public class SceneComponent extends JComponent
      Adds a shape to the scene.
      @param s the shape to add
      */
-    public void add(SceneShape s)
+    public void setDrone(DroneShape newDrone)
     {
-        if(s instanceof DroneShape){
-            drone = (DroneShape) s;
-        }
-
-        else
-            shapes.add(s);
-
+        drone = newDrone;
+    }
+    
+    public boolean addEnemy(EnemyShape enemy) {
+    	return enemies.add(enemy);
     }
 
     /**
@@ -44,7 +43,7 @@ public class SceneComponent extends JComponent
     }
 
     public void moveEnemys(){
-        for(SceneShape s : shapes){
+        for(SceneShape s : enemies){
             if(s instanceof EnemyShape){
                 s.move();
                 if(s.contains(new Point2D.Double(drone.getX() + 50,drone.getY())))
@@ -61,11 +60,11 @@ public class SceneComponent extends JComponent
         Graphics2D g2 = (Graphics2D) g;
 
         drone.draw(g2);
-        for (SceneShape s : shapes)
+        for (SceneShape s : enemies)
         {
             s.draw(g2);
         }
     }
 
-    private ArrayList<SceneShape> shapes;
+//    private ArrayList<SceneShape> shapes;
 }
