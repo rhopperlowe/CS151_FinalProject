@@ -1,5 +1,3 @@
-package src;
-
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyAdapter;

@@ -1,6 +1,3 @@
-package src;
-
-
 /**
  A program that allows users to edit a scene composed
  of items.
