@@ -13,11 +13,15 @@ public class SceneComponent extends JComponent
 {
     private DroneShape 						drone;
     private ArrayList<EnemyShape>			enemies;	
+    
+    private GameModel						model;
 
-    public SceneComponent(DroneShape drone)
+    public SceneComponent()
     {
-    	this.drone = drone;
+    	this.drone = new DroneShape(20, 20);
         this.enemies = new ArrayList<>();
+        
+        model = new GameModel(this);
     }
 
 
@@ -33,6 +37,12 @@ public class SceneComponent extends JComponent
     public boolean addEnemy(EnemyShape enemy) {
     	return enemies.add(enemy);
     }
+    
+    public boolean removeEnemy(EnemyShape enemy) {
+    	boolean success = enemies.remove(enemy);
+    	repaint();
+    	return success;
+    }
 
     /**
      Removes all selected shapes from the scene.
@@ -43,15 +53,37 @@ public class SceneComponent extends JComponent
     }
 
     public void moveEnemys(){
-        for(SceneShape s : enemies){
+        for(int i = enemies.size() - 1; i >= 0; i--){
+        	EnemyShape s = enemies.get(i);
             if(s instanceof EnemyShape){
                 s.move();
-                if(s.contains(new Point2D.Double(drone.getX() + 50,drone.getY())))
+                if(s.contains(new Point2D.Double(drone.getX() + 50,drone.getY()))) {
                     System.out.println("DRONE HIT");
-
+                    enemies.remove(s);
+                    model.crash();
+                    repaint();
+                }
             }
-
         }
+    }
+    
+    public void moveDrone(int keyCode) {
+    	if(keyCode == KeyEvent.VK_UP)
+            drone.setDy(-1);
+       else if(keyCode == KeyEvent.VK_DOWN)
+            drone.setDy(1);
+       else
+    	   drone.setDy(0);
+       
+       if (keyCode == KeyEvent.VK_LEFT)
+    	   drone.setDx(-1);
+       else if (keyCode == KeyEvent.VK_RIGHT)
+    	   drone.setDx(1);
+       else
+        	drone.setDx(0);
+       
+       drone.move();
+       repaint();
     }
 
     public void paintComponent(Graphics g)
