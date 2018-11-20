@@ -1,37 +1,58 @@
-package src;
-
 import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class GameModel {
-
+public class GameModel {	
 	private SceneComponent				scene;
-	private Timer						timer;
 	
-	private DroneShape					drone;
-	private ArrayList<EnemyShape>		enemies;
+	private Timer						enemyTimer;
+	private Timer						waveTimer;
 	
-	private static final int DELAY = 10;
+	private int							wave;
+	
+	private int							lives;
+		
+	private static final int MOVEMENT_DELAY = 10;
+	private static final int NEW_WAVE_DELAY = 5000;
 	
 	public GameModel(SceneComponent scene) {
 		this.scene = scene;
+				
+		wave = 0;
+		lives = 3;
 		
 		
-		drone = new DroneShape(20, 20);
-		enemies = new ArrayList<>();
-		for(int i=0; i < 2; i++){
-	        enemies.add(new EnemyShape(300,i*50));
-	    }
-		
-		
-		timer = new Timer(DELAY, event ->
+		enemyTimer = new Timer(MOVEMENT_DELAY, event ->
 		{
 		    scene.moveEnemys();
-		
 		    scene.repaint();
 		});
 		
-		timer.start();
+		waveTimer = new Timer(NEW_WAVE_DELAY, event -> {
+			for (int i = 0; i < 2; i++) {
+				scene.addEnemy(new EnemyShape(300, i * 50));
+			}
+		});
+		
+		waveTimer.start();
+		
+		enemyTimer.start();
+		
+		
 	}
+	
+	
+	public void gameOver() {
+		System.out.println("Game Over!");
+		enemyTimer.stop();
+		waveTimer.stop();
+	}
+	
+	public void crash() {
+		lives--;
+		if (lives == 0)
+			this.gameOver();
+		
+	}
+	
 }

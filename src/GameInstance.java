@@ -14,40 +14,24 @@ public class GameInstance extends JFrame {
 	 
 	private static final int DELAY = 10;
 
-
-
-
 	public GameInstance() {
 		super();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 
-		DroneShape drone = new DroneShape(20, 20);
-		scene = new SceneComponent(drone);
-	 
-
+		scene = new SceneComponent();
 		 
 		 
 		this.addKeyListener(new KeyAdapter() {
 			@Override
            public void keyPressed(KeyEvent e) {
         	   super.keyTyped(e);
-                
-               if(e.getKeyCode() == KeyEvent.VK_UP)
-                    drone.setDy(-1);
-               else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-                    drone.setDy(1);
-               else
-            	   drone.setDy(0);
-               
-               if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            	   drone.setDx(-1);
-               else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            	   drone.setDx(1);
-               else
-                	drone.setDx(0);
-               
-               drone.move();
-               scene.repaint();
+
+        	   int keyCode = e.getKeyCode();
+
+               if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
+            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+            	   scene.moveDrone(keyCode);
+               }
            }
 		});
 		
@@ -56,12 +40,12 @@ public class GameInstance extends JFrame {
 		this.setVisible(true);
 
 		spawnEnemys(5);
-		
+
 		timer = new Timer(DELAY, event ->
 		{
 		    scene.moveEnemys();
+		
 		    scene.repaint();
-
 		});
 		timer.start();
 	}
@@ -73,5 +57,5 @@ public class GameInstance extends JFrame {
 			scene.addEnemy(new EnemyShape(500,rand.nextInt(450))); //creates overlapping
 		}
 	}
-	 
+
 }
