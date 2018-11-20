@@ -15,35 +15,20 @@ public class GameInstance extends JFrame {
 		super();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		 
-		DroneShape drone = new DroneShape(20, 20);
-		scene = new SceneComponent(drone);
-	 
-		for(int i=0; i < 2; i++){
-	        scene.addEnemy(new EnemyShape(300,i*50));
-	    }
+		scene = new SceneComponent();
 		 
 		 
 		this.addKeyListener(new KeyAdapter() {
 			@Override
            public void keyPressed(KeyEvent e) {
         	   super.keyTyped(e);
-                
-               if(e.getKeyCode() == KeyEvent.VK_UP)
-                    drone.setDy(-1);
-               else if(e.getKeyCode() == KeyEvent.VK_DOWN)
-                    drone.setDy(1);
-               else
-            	   drone.setDy(0);
-               
-               if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            	   drone.setDx(-1);
-               else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            	   drone.setDx(1);
-               else
-                	drone.setDx(0);
-               
-               drone.move();
-               scene.repaint();
+        	   
+        	   int keyCode = e.getKeyCode();
+                       	   
+               if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
+            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+            	   scene.moveDrone(keyCode);
+               }
            }
 		});
 		
