@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.*;
 import java.awt.geom.*;
 
@@ -18,9 +20,12 @@ public interface SceneShape
      @return true if this item contains p
      */
 
-    boolean contains(Point2D p);
+    boolean contains(Polygon p);
 
     void move();
+
+    int getX();
+    int getY();
 
 
 }

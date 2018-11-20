@@ -1,3 +1,7 @@
+package src;
+
+import src.SceneShape;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -9,6 +13,7 @@ public class EnemyShape implements SceneShape {
 
     private int x, y;
     private BufferedImage enemyimage;
+    private Polygon hitbox;
 
 
     public EnemyShape(int x, int y) {
@@ -19,6 +24,7 @@ public class EnemyShape implements SceneShape {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        hitbox = new Polygon();
     }
 
     public int getX() {
@@ -32,22 +38,30 @@ public class EnemyShape implements SceneShape {
     @Override
     public void draw(Graphics2D g2) {
         g2.drawImage(enemyimage, x, y, 50, 50, null);
-        g2.drawRect(x,y,50,50); // used for debugging collison
+        generateHitBox();
+        g2.drawPolygon(hitbox); // used for debugging collison
 
     }
 
     @Override
-    public boolean contains(Point2D p) {
+    public boolean contains(Polygon p) {
 
-        if( (p.getX() >= x && p.getY() >= y)  && (p.getX() <= x+50 && p.getY() <= y+50))
-            return true;
-
-        return false;
+        return hitbox.intersects(p.getBounds2D());
     }
 
     @Override
     public void move() {
         x--;
+    }
+
+    public void generateHitBox(){
+        hitbox.reset();
+        hitbox.addPoint(x, y+30);
+        hitbox.addPoint(x+30,y+20);
+        hitbox.addPoint(x+50, y);
+        hitbox.addPoint(x+50, y+40);
+        hitbox.addPoint(x+5, y+40);
+
 
     }
 

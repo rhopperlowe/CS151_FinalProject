@@ -1,8 +1,7 @@
+package src;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
-
 import java.util.*;
 
 /**
@@ -11,8 +10,8 @@ import java.util.*;
 
 public class SceneComponent extends JComponent
 {
-    private DroneShape 						drone;
-    private ArrayList<EnemyShape>			enemies;	
+    private DroneShape drone;
+    private ArrayList<EnemyShape>			enemies;
 
     public SceneComponent(DroneShape drone)
     {
@@ -23,7 +22,7 @@ public class SceneComponent extends JComponent
 
     /**
      Adds a shape to the scene.
-     @param s the shape to add
+     @param newDrone the shape to add
      */
     public void setDrone(DroneShape newDrone)
     {
@@ -37,20 +36,18 @@ public class SceneComponent extends JComponent
     /**
      Removes all selected shapes from the scene.
      */
-    public void removeSelected()
+    public void removeEnemy(SceneShape s)
     {
-
+        enemies.remove(s);
     }
 
     public void moveEnemys(){
         for(SceneShape s : enemies){
             if(s instanceof EnemyShape){
                 s.move();
-                if(s.contains(new Point2D.Double(drone.getX() + 50,drone.getY())))
+                if(s.contains(drone.getHitbox()))
                     System.out.println("DRONE HIT");
-
             }
-
         }
     }
 
@@ -63,6 +60,8 @@ public class SceneComponent extends JComponent
         for (SceneShape s : enemies)
         {
             s.draw(g2);
+            if(s.getX() >= 550)
+                removeEnemy(s);
         }
     }
 

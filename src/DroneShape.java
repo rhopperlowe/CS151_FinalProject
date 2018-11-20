@@ -1,6 +1,9 @@
+package src;
+
+import src.SceneShape;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,6 +15,7 @@ public class DroneShape implements SceneShape {
     private BufferedImage droneimage;
     private int dy = 1;
     private int dx = 1;
+    private Polygon hitbox;
 
 
     public DroneShape(int x , int y){
@@ -22,6 +26,12 @@ public class DroneShape implements SceneShape {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        hitbox = new Polygon();
+        move();
+
+
+
     }
 
     public int getX() {
@@ -35,12 +45,13 @@ public class DroneShape implements SceneShape {
     @Override
     public void draw(Graphics2D g2) {
         g2.drawImage(droneimage, x, y, 50, 50, null);
-        g2.drawRect(x, y, 45, 45); // used for debugging collison
+        generateHitBox();
+        g2.drawPolygon(hitbox);
     }
 
     @Override
-    public boolean contains(Point2D p) {
-        return false;
+    public boolean contains(Polygon p) {
+        return hitbox.intersects(p.getBounds2D());
     }
     
     
@@ -67,4 +78,19 @@ public class DroneShape implements SceneShape {
 		if (dy != 0)
 			this.moveY();
 	}
+
+	public void generateHitBox(){
+        hitbox.reset();
+        hitbox.addPoint(x, y+8);
+        hitbox.addPoint(x+50,y+8);
+        hitbox.addPoint(x+40,y+25);
+        hitbox.addPoint(x+45,y+45);
+        hitbox.addPoint(x+25,y+30);
+        hitbox.addPoint(x+10,y+45);
+        hitbox.addPoint(x+10,y+30);
+    }
+
+    public Polygon getHitbox(){
+        return hitbox;
+    }
 }

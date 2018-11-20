@@ -1,8 +1,11 @@
+package src;
+
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class GameModel {
+
 	private SceneComponent				scene;
 	private Timer						timer;
 	
