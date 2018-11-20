@@ -15,13 +15,22 @@ public class SceneComponent extends JComponent
     private ArrayList<EnemyShape>			enemies;	
     
     private GameModel						model;
-
+    private int 							state;
+    
+    public static final int SETTING_UP = 0;
+	public static final int PLAYING = 1;
+	public static final int GAME_OVER = 2;
+	
     public SceneComponent()
     {
     	this.drone = new DroneShape(20, 20);
         this.enemies = new ArrayList<>();
         
+        this.setLayout(new BorderLayout());
+        
         model = new GameModel(this);
+        
+        state = PLAYING;
     }
 
 
@@ -52,8 +61,11 @@ public class SceneComponent extends JComponent
 
     }
 
-    public void moveEnemys(){
-        for(int i = enemies.size() - 1; i >= 0; i--){
+    public void moveEnemys() {
+    	if (state != PLAYING)
+    		return;
+    	
+        for(int i = enemies.size() - 1; i >= 0; i--) {
         	EnemyShape s = enemies.get(i);
             if(s instanceof EnemyShape){
                 s.move();
@@ -68,6 +80,9 @@ public class SceneComponent extends JComponent
     }
     
     public void moveDrone(int keyCode) {
+    	if (state != PLAYING)
+    		return;
+    	
     	if(keyCode == KeyEvent.VK_UP)
             drone.setDy(-1);
        else if(keyCode == KeyEvent.VK_DOWN)
@@ -85,7 +100,11 @@ public class SceneComponent extends JComponent
        drone.move();
        repaint();
     }
-
+    
+    public void changeState(int newState) {
+		if (state < 3 && state > 0 && state != newState)
+			state = newState;
+	}
     public void paintComponent(Graphics g)
     {
 
