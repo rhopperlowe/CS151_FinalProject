@@ -1,10 +1,7 @@
 package src;
 
-import src.SceneShape;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +57,7 @@ public class EnemyShape implements SceneShape {
         hitbox.addPoint(x+30,y+20);
         hitbox.addPoint(x+50, y);
         hitbox.addPoint(x+50, y+40);
-        hitbox.addPoint(x+5, y+40);
+        hitbox.addPoint(x+5, y+45);
 
 
     }

@@ -28,14 +28,14 @@ public class GameModel {
 
 		enemyTimer = new Timer(MOVEMENT_DELAY, event ->
 		{
-		    scene.moveEnemys();
+		    scene.moveEnemies();
 		    scene.repaint();
 		});
 
 		waveTimer = new Timer(NEW_WAVE_DELAY, event -> {
             Random rand = new Random();
             for (int i =0; i <= wave; i++){
-                scene.addEnemy(new EnemyShape(500,rand.nextInt(450))); //creates overlapping
+                scene.addEnemy(new EnemyShape(500,rand.nextInt(400))); //creates overlapping
 
             }
             wave++;
@@ -59,6 +59,7 @@ public class GameModel {
 		lives--;
 		if (lives == 0)
 			this.gameOver();
+		System.out.println("Number of Lives " + lives);
 
 	}
 

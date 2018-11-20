@@ -24,9 +24,5 @@ public interface SceneShape
 
     void move();
 
-    int getX();
-    int getY();
-
-
 }
 

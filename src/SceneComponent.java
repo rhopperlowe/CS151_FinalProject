@@ -20,7 +20,7 @@ public class SceneComponent extends JComponent
 {
     private DroneShape 						drone;
     private ArrayList<EnemyShape>			enemies;
-    private BufferedImage mountainimage;
+    private BufferedImage                   mountainimage;
 
     private GameModel						model;
 
@@ -40,14 +40,6 @@ public class SceneComponent extends JComponent
     }
 
 
-    /**
-     Adds a shape to the scene.
-     @param newDrone the shape to add
-     */
-    public void setDrone(DroneShape newDrone)
-    {
-        drone = newDrone;
-    }
     
     public boolean addEnemy(EnemyShape enemy) {
     	return enemies.add(enemy);
@@ -59,22 +51,15 @@ public class SceneComponent extends JComponent
     	return success;
     }
 
-    /**
-     Removes all selected shapes from the scene.
-     */
-    public void removeSelected()
-    {
 
-    }
-
-    public void moveEnemys(){
+    public void moveEnemies(){
         for(int i = enemies.size() - 1; i >= 0; i--){
         	EnemyShape s = enemies.get(i);
             if(s instanceof EnemyShape){
                 s.move();
                 if(s.contains(drone.getHitbox())) {
                     System.out.println("DRONE HIT");
-                    enemies.remove(s);
+                    removeEnemy(s);
                     model.crash();
                     repaint();
                 }
@@ -100,7 +85,7 @@ public class SceneComponent extends JComponent
        drone.move();
        repaint();
     }
-    
+
     public void paintComponent(Graphics g)
     {
 
