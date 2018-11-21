@@ -48,10 +48,15 @@ public class SceneComponent extends JComponent
     	repaint();
     	return success;
     }
+    
+    public void removeAllEnemies() {
+    	enemies.clear();
+    	this.repaint();
+    }
 
 
     public void moveEnemies() {
-    	if (model.getState() != GameModel.PLAYING)
+    	if (model.getState() == GameModel.GAME_OVER)
     		return;
     	
         for(int i = enemies.size() - 1; i >= 0; i--){
@@ -69,19 +74,19 @@ public class SceneComponent extends JComponent
     }
 
     public void moveDrone(int keyCode) {
-    	if (model.getState() != GameModel.PLAYING)
+       if (model.getState() != GameModel.PLAYING)
     		return;
-    	
-    	if(keyCode == KeyEvent.VK_UP)
+    	    	
+       if (keyCode == KeyEvent.VK_UP && drone.getY() > 20)
             drone.setDy(-1);
-       else if(keyCode == KeyEvent.VK_DOWN)
+       else if(keyCode == KeyEvent.VK_DOWN && drone.getY() < 400)
             drone.setDy(1);
        else
     	   drone.setDy(0);
 
-       if (keyCode == KeyEvent.VK_LEFT)
+       if (keyCode == KeyEvent.VK_LEFT && drone.getX() > 0)
     	   drone.setDx(-1);
-       else if (keyCode == KeyEvent.VK_RIGHT)
+       else if (keyCode == KeyEvent.VK_RIGHT && drone.getX() < 420)
     	   drone.setDx(1);
        else
         	drone.setDx(0);

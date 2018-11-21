@@ -34,7 +34,7 @@ public class EnemyShape implements SceneShape {
     public void draw(Graphics2D g2) {
         g2.drawImage(enemyimage, x, y, 50, 50, null);
         generateHitBox();
-        g2.drawPolygon(hitbox); // used for debugging collison
+//        g2.drawPolygon(hitbox); // used for debugging collison
 
     }
 
