@@ -33,15 +33,15 @@ public class GameModel {
 		});
 
 		waveTimer = new Timer(NEW_WAVE_DELAY, event -> {
-            Random rand = new Random();
-            for (int i =0; i <= wave; i++){
-                scene.addEnemy(new EnemyShape(500,rand.nextInt(400))); //creates overlapping
-
-            }
+            spawnEnemies(wave);
             wave++;
 		});
 
 		waveTimer.start();
+
+		//sends enemy at start of game
+		spawnEnemies(1);
+		wave++;
 
 		enemyTimer.start();
 
@@ -62,5 +62,15 @@ public class GameModel {
 		System.out.println("Number of Lives " + lives);
 
 	}
+
+	public void spawnEnemies(int amount){
+        Random rand = new Random();
+        for (int i =0; i < amount; i++){
+            scene.addEnemy(new EnemyShape(500,rand.nextInt(400))); //creates overlapping
+        }
+    }
+
+
+
 
 }
