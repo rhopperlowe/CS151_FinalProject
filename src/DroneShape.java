@@ -3,8 +3,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.*;
 
-public class DroneShape implements SceneShape {
+public class DroneShape extends JComponent implements SceneShape {
 
     private int x, y;
     private BufferedImage droneimage;

@@ -1,11 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import javax.swing.*;
 
-import java.awt.geom.*;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +22,8 @@ public class SceneComponent extends JComponent
 
     public SceneComponent()
     {
+    	this.setLayout(new BorderLayout());
+    	
     	this.drone = new DroneShape(20, 20);
         this.enemies = new ArrayList<>();
 
@@ -51,7 +50,10 @@ public class SceneComponent extends JComponent
     }
 
 
-    public void moveEnemies(){
+    public void moveEnemies() {
+    	if (model.getState() != GameModel.PLAYING)
+    		return;
+    	
         for(int i = enemies.size() - 1; i >= 0; i--){
         	EnemyShape s = enemies.get(i);
             if(s instanceof EnemyShape){
@@ -67,6 +69,9 @@ public class SceneComponent extends JComponent
     }
 
     public void moveDrone(int keyCode) {
+    	if (model.getState() != GameModel.PLAYING)
+    		return;
+    	
     	if(keyCode == KeyEvent.VK_UP)
             drone.setDy(-1);
        else if(keyCode == KeyEvent.VK_DOWN)

@@ -34,7 +34,7 @@ public class GameInstance extends JFrame {
 		});
 		
 		this.add(scene, BorderLayout.CENTER);
-		this.setSize(500, 500);
+		this.setSize(500, 550);
 		this.setVisible(true);
 
 
