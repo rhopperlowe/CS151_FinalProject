@@ -8,17 +8,20 @@ public class GameModel {
 	private TopToolBar					topTools;
 	private int							state;
 
-	private Timer						spawnTimer, enemyMovementTimer, waveTimer, pointTimer;
+	private Timer						spawnTimer, enemyMovementTimer, 
+										freezeTimer, waveTimer, pointTimer;
 
 	private int							wave, lives, points, spawned;
 	
 	public static final int PLAYING = 1;
 	public static final int GAME_OVER = 0;
+	public static final int DRONE_FROZEN = 2;
 
 	private static final int MOVEMENT_DELAY = 10;
 	private static final int ENEMY_SPAWN_DELAY = 1_000;
 	private static final int NEW_WAVE_DELAY = 8_000;
 	private static final int ADD_POINT_DELAY = 90_000;
+	private static final int DRONE_FROZEN_DELAY = 5_000;
 
 	public GameModel(SceneComponent scene) {
 		this.scene = scene;
@@ -52,13 +55,22 @@ public class GameModel {
         });
 		spawnTimer.setInitialDelay(0);
 		
-		waveTimer = new Timer(NEW_WAVE_DELAY, event -> {
+		waveTimer = new Timer(7_000, event -> {
+			scene.removeAllEnemies();
 			bottomTools.setWave(++wave);
+			
 			spawned = 0;
 			spawnTimer.restart();
+			
+			waveTimer.setDelay((wave * 1_000) + 7_000);
 //            spawnEnemies(wave);
 		});
 		waveTimer.setInitialDelay(1000);
+		
+		freezeTimer = new Timer(DRONE_FROZEN_DELAY, event -> {
+			if (state == DRONE_FROZEN)
+				state = PLAYING;
+		});
 		
 		pointTimer = new Timer(ADD_POINT_DELAY, event -> {
 			topTools.setPoints(++points);
@@ -86,10 +98,17 @@ public class GameModel {
 
 	public void gameOver() {
 		System.out.println("Game Over!");
-		enemyMovementTimer.stop();
-		waveTimer.stop();
+		this.stopAllTimers();
 		topTools.pauseGameClock();
 		state = GAME_OVER;
+	}
+	
+	public void stopAllTimers() {
+		spawnTimer.stop();
+		enemyMovementTimer.stop();
+		freezeTimer.stop();
+		waveTimer.stop();
+		pointTimer.stop();
 	}
 
 	public void crash() {
@@ -97,6 +116,10 @@ public class GameModel {
 		lives--;
 		if (lives == 0)
 			this.gameOver();
+		else if (state == PLAYING) {
+			state = DRONE_FROZEN;
+			freezeTimer.restart();
+		}
 	}
 
 	public void spawnEnemies(int amount){
