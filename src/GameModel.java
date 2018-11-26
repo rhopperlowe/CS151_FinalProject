@@ -13,10 +13,11 @@ public class GameModel {
 
 	private int							wave, lives, points, spawned;
 	
-	public static final int PLAYING = 1;
+	public static final int START_MENU = 1;
+	public static final int PLAYING = 2;
 	public static final int GAME_OVER = 0;
-	public static final int DRONE_FROZEN = 2;
-
+	public static final int DRONE_FROZEN = 3;
+	
 	private static final int MOVEMENT_DELAY = 10;
 	private static final int ENEMY_SPAWN_DELAY = 1_000;
 	private static final int NEW_WAVE_DELAY = 8_000;
@@ -55,14 +56,14 @@ public class GameModel {
         });
 		spawnTimer.setInitialDelay(0);
 		
-		waveTimer = new Timer(7_000, event -> {
+		waveTimer = new Timer(NEW_WAVE_DELAY, event -> {
 			scene.removeAllEnemies();
 			bottomTools.setWave(++wave);
 			
 			spawned = 0;
 			spawnTimer.restart();
 			
-			waveTimer.setDelay((wave * 1_000) + 7_000);
+			waveTimer.setDelay((wave * 1_000) + NEW_WAVE_DELAY);
 //            spawnEnemies(wave);
 		});
 		waveTimer.setInitialDelay(1000);
@@ -128,8 +129,5 @@ public class GameModel {
             scene.addEnemy(new EnemyShape(500,rand.nextInt(400))); //creates overlapping
         }
     }
-
-
-
 
 }

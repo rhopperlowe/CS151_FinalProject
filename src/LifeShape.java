@@ -9,12 +9,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class LifeShape implements Icon {
-	private int x, y, width, height;
-    private BufferedImage lifeImage;
+	private int						width, height;
+    private BufferedImage 			lifeImage;
     
     public LifeShape(int width) {
-//    	this.x = x;
-//      this.y = y;
         
         this.width = width;
         height = width;
