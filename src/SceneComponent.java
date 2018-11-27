@@ -17,8 +17,9 @@ public class SceneComponent extends JComponent
     private DroneShape 						drone;
     private ArrayList<EnemyShape>			enemies;
     private BufferedImage                   mountainimage;
+    private LaserShape                      laser;
 
-    private GameModel						model;
+    private GameModel model;
 
     public SceneComponent()
     {
@@ -69,6 +70,12 @@ public class SceneComponent extends JComponent
                     model.crash();
                     repaint();
                 }
+
+                if(laser!= null && s.contains(laser.getHitbox())){
+                    removeEnemy(s);
+                    repaint();
+                }
+
             }
         }
     }
@@ -76,6 +83,10 @@ public class SceneComponent extends JComponent
     public void moveDrone(int keyCode) {
        if (model.getState() != GameModel.PLAYING)
     		return;
+
+
+        if(keyCode == KeyEvent.VK_SPACE)
+            laser = new LaserShape(drone.getX()+50,drone.getY()+25);
     	    	
        if (keyCode == KeyEvent.VK_UP && drone.getY() > 20)
             drone.setDy(-1);
@@ -103,9 +114,15 @@ public class SceneComponent extends JComponent
         g2.setColor(new Color(12, 122, 255));
         g2.fillRect(0,0,500,500);//set background fix later
         g2.setColor(Color.green);
-        g2.drawImage(mountainimage,0,375,500,100,null);
+        g2.drawImage(mountainimage,0,385,500,100,null);
 
         drone.draw(g2);
+
+        if(laser != null) {
+            laser.move();
+            laser.draw(g2);
+        }
+
         for (SceneShape s : enemies) {
             s.draw(g2);
         }

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class GameInstance extends JFrame {
 	private Timer 						timer;
-	private SceneComponent				scene;
+	private SceneComponent scene;
 	 
 	private static final int DELAY = 10;
 
@@ -27,7 +27,9 @@ public class GameInstance extends JFrame {
         	   int keyCode = e.getKeyCode();
 
                if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
-            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
+						|| keyCode == KeyEvent.VK_SPACE)
+               {
             	   scene.moveDrone(keyCode);
                }
            }

@@ -31,7 +31,7 @@ public class DroneShape extends JComponent implements SceneShape {
     public void draw(Graphics2D g2) {
         g2.drawImage(droneimage, x, y, 50, 50, null);
         generateHitBox();
-//        g2.drawPolygon(hitbox);
+      g2.drawPolygon(hitbox);
     }
 
     @Override

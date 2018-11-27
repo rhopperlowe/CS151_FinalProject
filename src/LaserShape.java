@@ -44,7 +44,7 @@ public class LaserShape extends JComponent implements SceneShape {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.drawImage(laserImage, x, y, 20, 10, null);
-//		generateHitbox();
+		generateHitbox();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class LaserShape extends JComponent implements SceneShape {
 		x += dx;
 	}
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
@@ -70,6 +70,6 @@ public class LaserShape extends JComponent implements SceneShape {
 		panel.setVisible(true);
 		frame.repaint();
 		frame.setVisible(true);
-	}
+	}*/
 
 }

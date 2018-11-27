@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class TopToolBar extends JPanel {
 	private JLabel							points;
-	private Clock							clock;
+	private Clock clock;
 	
 	public TopToolBar() {
 		this.setLayout(new BorderLayout());

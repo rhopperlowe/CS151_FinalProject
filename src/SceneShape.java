@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.awt.geom.*;
+
 
 /**
  A shape that is a part of a scene.
