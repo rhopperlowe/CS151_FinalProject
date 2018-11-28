@@ -9,7 +9,8 @@ public class GameModel {
 	private int							state;
 
 	private Timer						spawnTimer, enemyMovementTimer, 
-										freezeTimer, waveTimer, pointTimer;
+										freezeTimer, waveTimer, pointTimer,cloudTimer
+                                        ,cloudMovementTimer;
 
 	private int							wave, lives, points, spawned;
 	
