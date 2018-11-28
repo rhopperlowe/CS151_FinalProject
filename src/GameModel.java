@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class GameModel {
 	private SceneComponent 				scene;
-	private BottomToolBar				bottomTools;
-	private TopToolBar					topTools;
+	private BottomToolBar bottomTools;
+	private TopToolBar topTools;
 	private int							state;
 
 	private Timer						spawnTimer, enemyMovementTimer, 
@@ -19,10 +19,12 @@ public class GameModel {
 	public static final int DRONE_FROZEN = 3;
 	
 	private static final int MOVEMENT_DELAY = 10;
+	private static final int CLOUD_MOVEMENT_DELAY = 20;
 	private static final int ENEMY_SPAWN_DELAY = 1_000;
 	private static final int NEW_WAVE_DELAY = 8_000;
 	private static final int ADD_POINT_DELAY = 90_000;
 	private static final int DRONE_FROZEN_DELAY = 2_000;
+	private static final int CLOUD_SPAWN_DELAY = 3_000;
 
 	public GameModel(SceneComponent scene) {
 		this.scene = scene;
@@ -39,11 +41,16 @@ public class GameModel {
 		scene.add(bottomTools, BorderLayout.SOUTH);
 		scene.repaint();
 		
-		
+
 		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event -> {
 		    scene.moveEnemies();
 		    scene.repaint();
 		});
+
+		cloudMovementTimer = new Timer(CLOUD_MOVEMENT_DELAY, event ->{
+		    scene.moveClouds();
+		    scene.repaint();
+        });
 
 		spawnTimer = new Timer(ENEMY_SPAWN_DELAY, event -> {
         	if (spawned < wave && spawned < 7) {
@@ -77,9 +84,16 @@ public class GameModel {
 			topTools.setPoints(++points);
 		});
 
+		cloudTimer = new Timer(CLOUD_SPAWN_DELAY, event -> {
+			Random rand = new Random();
+			scene.addCloud(new CloudShape(500,rand.nextInt(400)));
+		});
+
 		waveTimer.start();
 		enemyMovementTimer.start();
+		cloudMovementTimer.start();
 		pointTimer.start();
+		cloudTimer.start();
 		
 		state = PLAYING;
 	}
@@ -122,12 +136,5 @@ public class GameModel {
 			freezeTimer.restart();
 		}
 	}
-
-	public void spawnEnemies(int amount){
-        Random rand = new Random();
-        for (int i =0; i < amount; i++){
-            scene.addEnemy(new EnemyShape(500,rand.nextInt(400))); //creates overlapping
-        }
-    }
 
 }

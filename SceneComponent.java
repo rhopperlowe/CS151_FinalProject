@@ -16,7 +16,6 @@ public class SceneComponent extends JComponent
     public SceneComponent()
     {
         shapes = new ArrayList<SceneShape>();
-
     }
 
 
@@ -44,10 +43,11 @@ public class SceneComponent extends JComponent
     }
 
     public void moveEnemys(){
+
         for(SceneShape s : shapes){
             if(s instanceof EnemyShape){
                 s.move();
-                if(s.contains(new Point2D.Double(drone.getX(),drone.getY())))
+                if(s.contains(new Point2D.Double(drone.getX()+50,drone.getY())))
                     System.out.println("DRONE HIT");
 
             }

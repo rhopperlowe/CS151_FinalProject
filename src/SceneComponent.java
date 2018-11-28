@@ -16,17 +16,19 @@ public class SceneComponent extends JComponent
 {
     private DroneShape 						drone;
     private ArrayList<EnemyShape>			enemies;
+    private ArrayList<CloudShape>           cloudShapes;
     private BufferedImage                   mountainimage;
-    private LaserShape                      laser;
+    private LaserShape laser;
 
     private GameModel model;
 
     public SceneComponent()
     {
     	this.setLayout(new BorderLayout());
-    	
+
     	this.drone = new DroneShape(20, 20);
         this.enemies = new ArrayList<>();
+        this.cloudShapes= new ArrayList<>();
 
         model = new GameModel(this);
 
@@ -39,7 +41,7 @@ public class SceneComponent extends JComponent
     }
 
 
-    
+
     public boolean addEnemy(EnemyShape enemy) {
     	return enemies.add(enemy);
     }
@@ -49,7 +51,7 @@ public class SceneComponent extends JComponent
     	repaint();
     	return success;
     }
-    
+
     public void removeAllEnemies() {
     	enemies.clear();
     	this.repaint();
@@ -59,7 +61,7 @@ public class SceneComponent extends JComponent
     public void moveEnemies() {
     	if (model.getState() == GameModel.GAME_OVER)
     		return;
-    	
+
         for(int i = enemies.size() - 1; i >= 0; i--){
         	EnemyShape s = enemies.get(i);
             if(s instanceof EnemyShape){
@@ -73,6 +75,7 @@ public class SceneComponent extends JComponent
 
                 if(laser!= null && s.contains(laser.getHitbox())){
                     removeEnemy(s);
+                    laser = null;
                     repaint();
                 }
 
@@ -80,14 +83,22 @@ public class SceneComponent extends JComponent
         }
     }
 
+    public void moveClouds() {
+        for (int i = cloudShapes.size() - 1; i >= 0; i--) {
+            CloudShape s = cloudShapes.get(i);
+            s.move();
+        }
+    }
+
+    public void addCloud(CloudShape c){cloudShapes.add(c);}
+
     public void moveDrone(int keyCode) {
        if (model.getState() != GameModel.PLAYING)
     		return;
 
-
-        if(keyCode == KeyEvent.VK_SPACE)
+        if(keyCode == KeyEvent.VK_SPACE && (laser == null || laser.getX() > 500))
             laser = new LaserShape(drone.getX()+50,drone.getY()+25);
-    	    	
+
        if (keyCode == KeyEvent.VK_UP && drone.getY() > 20)
             drone.setDy(-1);
        else if(keyCode == KeyEvent.VK_DOWN && drone.getY() < 400)
@@ -116,6 +127,9 @@ public class SceneComponent extends JComponent
         g2.setColor(Color.green);
         g2.drawImage(mountainimage,0,385,500,100,null);
 
+        for (CloudShape c : cloudShapes)
+            c.draw(g2);
+
         drone.draw(g2);
 
         if(laser != null) {
@@ -126,5 +140,6 @@ public class SceneComponent extends JComponent
         for (SceneShape s : enemies) {
             s.draw(g2);
         }
+
     }
 }

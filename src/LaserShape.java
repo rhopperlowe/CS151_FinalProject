@@ -56,20 +56,7 @@ public class LaserShape extends JComponent implements SceneShape {
 	public void move() {
 		x += dx;
 	}
-	
-/*	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		frame.setBounds(0, 0, 500, 500);
-		JPanel panel = new JPanel();
-		LaserShape laser = new LaserShape(100, 100);
-		panel.add(laser);
-		frame.add(panel);
-		
-		panel.setVisible(true);
-		frame.repaint();
-		frame.setVisible(true);
-	}*/
+
+	public int getX(){return x;}
 
 }

@@ -4,12 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class CloudComponent implements SceneShape {
+public class CloudShape implements SceneShape {
 
     private int x,y;
     private BufferedImage cloudimage;
 
-    public CloudComponent(int x, int y){
+    public CloudShape(int x, int y){
         this.x = x;
         this.y = y;
         try {
@@ -22,7 +22,7 @@ public class CloudComponent implements SceneShape {
 
     @Override
     public void draw(Graphics2D g2) {
-        g2.drawImage(cloudimage,x,y,20,40,null);
+        g2.drawImage(cloudimage,x,y,100,40,null);
     }
 
     @Override
