@@ -1,5 +1,9 @@
 import javax.swing.*;
+
+import javafx.scene.input.KeyCode;
+
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class GameModel {
@@ -8,9 +12,9 @@ public class GameModel {
 	private TopToolBar topTools;
 	private int							state;
 
-	private Timer						spawnTimer, enemyMovementTimer, 
-										freezeTimer, waveTimer, pointTimer,cloudTimer
-                                        ,cloudMovementTimer;
+	private Timer						spawnTimer, droneIdleTimer, enemyMovementTimer, 
+										freezeTimer, waveTimer, pointTimer, cloudTimer,
+                                        cloudMovementTimer;
 
 	private int							wave, lives, points, spawned;
 	
@@ -18,7 +22,9 @@ public class GameModel {
 	public static final int PLAYING = 2;
 	public static final int GAME_OVER = 0;
 	public static final int DRONE_FROZEN = 3;
+	public static final int DRONE_IDLE = 4;
 	
+	private static final int DRONE_IDLE_DELAY = 20;
 	private static final int MOVEMENT_DELAY = 10;
 	private static final int CLOUD_MOVEMENT_DELAY = 20;
 	private static final int ENEMY_SPAWN_DELAY = 1_000;
@@ -43,6 +49,10 @@ public class GameModel {
 		scene.repaint();
 		
 
+		droneIdleTimer = new Timer(DRONE_IDLE_DELAY, event -> {
+			scene.droneIdle();
+		});
+		
 		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event -> {
 		    scene.moveEnemies();
 		    scene.repaint();
@@ -91,6 +101,7 @@ public class GameModel {
 		});
 
 		waveTimer.start();
+		droneIdleTimer.start();
 		enemyMovementTimer.start();
 		cloudMovementTimer.start();
 		pointTimer.start();
@@ -109,8 +120,16 @@ public class GameModel {
 			state = GAME_OVER;
 		else if (newState == 1)
 			state = PLAYING;
+		else if (newState == DRONE_IDLE) {
+			state = DRONE_IDLE;
+			droneIdleTimer.restart();
+		}
 	}
 
+	public void stopDroneIdle() {
+		state = PLAYING;
+		droneIdleTimer.stop();
+	}
 
 	public void gameOver() {
 		System.out.println("Game Over!");
@@ -130,6 +149,10 @@ public class GameModel {
 	public void crash() {
 		bottomTools.loseLife();
 		lives--;
+		
+		if (state == DRONE_IDLE)
+			this.stopDroneIdle();
+		
 		if (lives == 0)
 			this.gameOver();
 		else if (state == PLAYING) {

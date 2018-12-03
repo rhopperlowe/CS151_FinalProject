@@ -33,6 +33,17 @@ public class GameInstance extends JFrame {
             	   scene.moveDrone(keyCode);
                }
            }
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
+	            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
+							|| keyCode == KeyEvent.VK_SPACE)
+				{
+					scene.startDroneIdle();
+				}
+			}
 		});
 		
 		this.add(scene, BorderLayout.CENTER);

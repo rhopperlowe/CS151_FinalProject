@@ -49,11 +49,11 @@ public class DroneShape extends JComponent implements SceneShape {
     }
 
     public void moveX() {
-		x += dx * 4;
+		x += dx;
 	}
 
 	public void moveY() {
-		y += dy * 4;
+		y += dy;
 	}
 	
 	public int getX() {

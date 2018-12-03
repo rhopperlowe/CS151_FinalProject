@@ -56,6 +56,17 @@ public class SceneComponent extends JComponent
     	enemies.clear();
     	this.repaint();
     }
+    
+    public void startDroneIdle() {
+    	if (model.getState() == GameModel.PLAYING)
+    		model.changeState(GameModel.DRONE_IDLE);
+    }
+    
+    public void droneIdle() {
+    	drone.setDx(1);
+    	drone.setDy(0);
+    	drone.move();
+    }
 
 
     public void moveEnemies() {
@@ -93,23 +104,28 @@ public class SceneComponent extends JComponent
     public void addCloud(CloudShape c){cloudShapes.add(c);}
 
     public void moveDrone(int keyCode) {
-       if (model.getState() != GameModel.PLAYING)
+       if (model.getState() != GameModel.PLAYING && model.getState() != GameModel.DRONE_IDLE)
     		return;
 
         if(keyCode == KeyEvent.VK_SPACE && (laser == null || laser.getX() > 500))
             laser = new LaserShape(drone.getX()+50,drone.getY()+25);
+        
+        if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN || 
+        		keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT)
+        	model.stopDroneIdle();
+        	
 
        if (keyCode == KeyEvent.VK_UP && drone.getY() > 20)
-            drone.setDy(-1);
+            drone.setDy(-4);
        else if(keyCode == KeyEvent.VK_DOWN && drone.getY() < 400)
-            drone.setDy(1);
+            drone.setDy(4);
        else
     	   drone.setDy(0);
 
        if (keyCode == KeyEvent.VK_LEFT && drone.getX() > 0)
-    	   drone.setDx(-1);
+    	   drone.setDx(-4);
        else if (keyCode == KeyEvent.VK_RIGHT && drone.getX() < 420)
-    	   drone.setDx(1);
+    	   drone.setDx(4);
        else
         	drone.setDx(0);
 
