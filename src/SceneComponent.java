@@ -56,18 +56,19 @@ public class SceneComponent extends JComponent
     public boolean removeEnemy(EnemyShape enemy)
     {
     	boolean success = enemies.remove(enemy);
-    	repaint();
     	return success;
     }
 
     public void removeAllEnemies()
     {
     	enemies.clear();
-    	this.repaint();
     }
     
     public void droneIdle()
     {
+    	if (model.getState() != GameModel.DRONE_IDLE)
+    		return;
+    		
     	drone.setDx(1);
     	drone.setDy(0);
     	drone.move();
@@ -93,14 +94,12 @@ public class SceneComponent extends JComponent
                     System.out.println("DRONE HIT");
                     removeEnemy(s);
                     model.crash();
-                    repaint();
                 }
 
                 if(laser!= null && s.contains(laser.getHitbox()))
                 {
                     removeEnemy(s);
                     laser = null;
-                    repaint();
                 }
             }
         }
