@@ -67,7 +67,7 @@ public class SceneComponent extends JComponent
     /**
      * Removes enemy into the enemy arraylist
      * @param enemy
-     * @return
+     * @return returns boolean
      */
 
     public boolean removeEnemy(EnemyShape enemy)
