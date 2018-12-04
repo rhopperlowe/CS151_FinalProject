@@ -12,7 +12,8 @@ import javax.swing.*;
 public class GameInstance extends JFrame
 {
 	private Timer 						timer;
-	private SceneComponent scene;
+	private GameModel					model;
+	
 	private static final int DELAY = 10;
 
 	public GameInstance()
@@ -20,7 +21,7 @@ public class GameInstance extends JFrame
 		super();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		scene = new SceneComponent();
+		model = new GameModel();
 		 
 		this.addKeyListener(new KeyAdapter()
 		{
@@ -35,7 +36,7 @@ public class GameInstance extends JFrame
             		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
 						|| keyCode == KeyEvent.VK_SPACE)
                {
-            	   scene.moveDrone(keyCode);
+            	   model.moveDrone(keyCode);
                }
            }
 			
@@ -48,20 +49,19 @@ public class GameInstance extends JFrame
 	            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
 							|| keyCode == KeyEvent.VK_SPACE)
 				{
-					scene.startDroneIdle();
+					model.startDroneIdle();
 				}
 			}
 		});
 		
-		this.add(scene, BorderLayout.CENTER);
 		this.setSize(500, 550);
+		this.add(model);
 		this.setVisible(true);
-
 		//scene.displayStartMenu();
 
 		timer = new Timer(DELAY, event ->
 		{
-		    scene.repaint();
+		    model.repaint();
 		});
 
 		timer.start();
