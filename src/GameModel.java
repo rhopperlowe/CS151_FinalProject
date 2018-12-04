@@ -144,6 +144,7 @@ public class GameModel {
 		freezeTimer.stop();
 		waveTimer.stop();
 		pointTimer.stop();
+		cloudMovementTimer.stop();
 	}
 
 	public void crash() {
