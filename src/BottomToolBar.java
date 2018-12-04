@@ -1,13 +1,22 @@
+//CS151 Group Project
+//Ryan
+//Sebastian
+//Ezana
+
 import javax.swing.*;
 import java.awt.*;
 
-public class BottomToolBar extends JPanel {
-	private JComponent						lives;
-	private JLabel							wave;
+public class BottomToolBar extends JPanel
+{
+	private JComponent lives;
+	private JLabel wave;
 	
-	public BottomToolBar(){
-		lives = new JPanel();		
-		for (int i = 0; i < 3; i++) {
+	public BottomToolBar()
+	{
+		lives = new JPanel();
+
+		for (int i = 0; i < 3; i++)
+		{
 			JLabel label = new JLabel(new LifeShape(20));
 			lives.add(label);
 		}
@@ -19,12 +28,15 @@ public class BottomToolBar extends JPanel {
 		this.add(wave, BorderLayout.EAST);
 	}
 	
-	public void loseLife() {
+	public void loseLife()
+	{
 		int length = lives.getComponentCount() - 1;
 		lives.remove(lives.getComponents()[length]);
 	}
 	
-	public void setWave(int wave) {
+	public void setWave(int wave)
+	{
 		this.wave.setText("Wave: " + wave);
 	}
+
 }
