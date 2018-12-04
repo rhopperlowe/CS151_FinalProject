@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-public class GameModel
+public class GameModel extends JPanel
 {
 	private SceneComponent scene;
 	private BottomToolBar bottomTools;
@@ -39,9 +39,12 @@ public class GameModel
 	private static final int DRONE_FROZEN_DELAY = 5_000; //5 seconds delay when drone is hit
 	private static final int CLOUD_SPAWN_DELAY = 3_000;
 
-	public GameModel(SceneComponent scene)
+	public GameModel()
 	{
-		this.scene = scene;
+		this.setLayout(new BorderLayout());
+		
+		this.scene = new SceneComponent(this);
+		this.add(scene, BorderLayout.CENTER);
 
 		wave = 0;
 		spawned = 0;
@@ -149,6 +152,19 @@ public class GameModel
 			state = DRONE_IDLE;
 			droneIdleTimer.restart();
 		}
+	}
+	
+	public void moveDrone(int keyCode)
+    {
+        scene.moveDrone(keyCode);
+    }
+	
+	public void startDroneIdle() {
+		if (state == PLAYING)
+        {
+           state = DRONE_IDLE;
+           droneIdleTimer.restart();
+        }
 	}
 
 	public void stopDroneIdle()
