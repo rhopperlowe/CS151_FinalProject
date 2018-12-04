@@ -29,14 +29,14 @@ public class SceneComponent extends JComponent
 
     private int laserStart;
 
-    public SceneComponent()
+    public SceneComponent(GameModel model)
     {
     	this.setLayout(new BorderLayout());
     	this.drone = new DroneShape(20, 20);
         this.enemies = new ArrayList<>();
         this.cloudShapes= new ArrayList<>();
 
-        model = new GameModel(this);
+        this.model = model;
 
         try
         {
@@ -64,14 +64,6 @@ public class SceneComponent extends JComponent
     {
     	enemies.clear();
     	this.repaint();
-    }
-    
-    public void startDroneIdle()
-    {
-    	if (model.getState() == GameModel.PLAYING)
-        {
-            model.changeState(GameModel.DRONE_IDLE);
-        }
     }
     
     public void droneIdle()
@@ -175,7 +167,6 @@ public class SceneComponent extends JComponent
        }
 
        drone.move();
-       repaint();
     }
 
     public void displayStartMenu() {
