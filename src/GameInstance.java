@@ -1,4 +1,3 @@
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -6,9 +5,9 @@ import javax.swing.*;
 
 public class GameInstance extends JFrame {
 	private Timer 						timer;
-	private SceneComponent scene;
+	private GameModel 					model;
 	 
-	private static final int DELAY = 10;
+	private static final int REPAINT_DELAY = 5;
 
 
 	public GameInstance() {
@@ -16,7 +15,7 @@ public class GameInstance extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-		scene = new SceneComponent();
+		model = new GameModel();
 
 		 
 		this.addKeyListener(new KeyAdapter() {
@@ -30,7 +29,8 @@ public class GameInstance extends JFrame {
             		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
 						|| keyCode == KeyEvent.VK_SPACE)
                {
-            	   scene.moveDrone(keyCode);
+            	   if (model.getState() == GameModel.PLAYING || model.getState() == GameModel.DRONE_IDLE)
+            		   model.moveDrone(keyCode);
                }
            }
 			
@@ -41,22 +41,20 @@ public class GameInstance extends JFrame {
 	            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
 							|| keyCode == KeyEvent.VK_SPACE)
 				{
-					scene.startDroneIdle();
+					if (model.getState() == GameModel.PLAYING)
+						model.changeState(GameModel.DRONE_IDLE);
 				}
 			}
 		});
-		
-		this.add(scene, BorderLayout.CENTER);
+
+		this.add(model);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 550);
 		this.setVisible(true);
-
-
-
-		timer = new Timer(DELAY, event ->
-		{
-
-
-		    scene.repaint();
+		
+		
+		timer = new Timer(REPAINT_DELAY, event -> {
+		    model.repaint();
 		});
 		timer.start();
 	}

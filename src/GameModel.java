@@ -6,10 +6,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-public class GameModel {
+public class GameModel extends JPanel {
 	private SceneComponent 				scene;
-	private BottomToolBar bottomTools;
-	private TopToolBar topTools;
+	private BottomToolBar 				bottomTools;
+	private TopToolBar 					topTools;
 	private int							state;
 
 	private Timer						spawnTimer, droneIdleTimer, enemyMovementTimer, 
@@ -33,8 +33,9 @@ public class GameModel {
 	private static final int DRONE_FROZEN_DELAY = 2_000;
 	private static final int CLOUD_SPAWN_DELAY = 3_000;
 
-	public GameModel(SceneComponent scene) {
-		this.scene = scene;
+	public GameModel() {
+		
+		this.scene = new SceneComponent(this);
 
 		wave = 0;
 		spawned = 0;
@@ -46,7 +47,7 @@ public class GameModel {
 		
 		scene.add(topTools, BorderLayout.NORTH);
 		scene.add(bottomTools, BorderLayout.SOUTH);
-		scene.repaint();
+//		scene.repaint();
 		
 
 		droneIdleTimer = new Timer(DRONE_IDLE_DELAY, event -> {
@@ -55,12 +56,12 @@ public class GameModel {
 		
 		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event -> {
 		    scene.moveEnemies();
-		    scene.repaint();
+//		    scene.repaint();
 		});
 
 		cloudMovementTimer = new Timer(CLOUD_MOVEMENT_DELAY, event ->{
 		    scene.moveClouds();
-		    scene.repaint();
+//		    scene.repaint();
         });
 
 		spawnTimer = new Timer(ENEMY_SPAWN_DELAY, event -> {
@@ -108,6 +109,9 @@ public class GameModel {
 		cloudTimer.start();
 		
 		state = PLAYING;
+		
+		this.setLayout(new BorderLayout());
+		this.add(scene, BorderLayout.CENTER);		
 	}
 	
 	
@@ -125,6 +129,10 @@ public class GameModel {
 			droneIdleTimer.restart();
 		}
 	}
+	
+	public void moveDrone(int keyCode) {
+       scene.moveDrone(keyCode);
+    }
 
 	public void stopDroneIdle() {
 		state = PLAYING;

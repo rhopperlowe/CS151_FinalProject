@@ -18,11 +18,11 @@ public class SceneComponent extends JComponent
     private ArrayList<EnemyShape>			enemies;
     private ArrayList<CloudShape>           cloudShapes;
     private BufferedImage                   mountainimage;
-    private LaserShape laser;
+    private LaserShape 						laser;
 
-    private GameModel model;
+    private GameModel						model;
 
-    public SceneComponent()
+    public SceneComponent(GameModel model)
     {
     	this.setLayout(new BorderLayout());
 
@@ -30,7 +30,7 @@ public class SceneComponent extends JComponent
         this.enemies = new ArrayList<>();
         this.cloudShapes= new ArrayList<>();
 
-        model = new GameModel(this);
+       this.model = model;
 
         try {
             mountainimage = ImageIO.read(new File("resources/mountains.png"));
@@ -48,13 +48,13 @@ public class SceneComponent extends JComponent
 
     public boolean removeEnemy(EnemyShape enemy) {
     	boolean success = enemies.remove(enemy);
-    	repaint();
+//    	repaint();
     	return success;
     }
 
     public void removeAllEnemies() {
     	enemies.clear();
-    	this.repaint();
+//    	this.repaint();
     }
     
     public void startDroneIdle() {
@@ -81,13 +81,13 @@ public class SceneComponent extends JComponent
                     System.out.println("DRONE HIT");
                     removeEnemy(s);
                     model.crash();
-                    repaint();
+//                    repaint();
                 }
 
                 if(laser!= null && s.contains(laser.getHitbox())){
                     removeEnemy(s);
                     laser = null;
-                    repaint();
+//                    repaint();
                 }
 
             }
@@ -130,7 +130,7 @@ public class SceneComponent extends JComponent
         	drone.setDx(0);
 
        drone.move();
-       repaint();
+//       repaint();
     }
 
     public void paintComponent(Graphics g)

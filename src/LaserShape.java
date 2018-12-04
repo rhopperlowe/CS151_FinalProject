@@ -8,7 +8,7 @@ public class LaserShape extends JComponent implements SceneShape {
 	
 	private int width = 10;
 	private int height = 5;
-	private int dx = 5;
+	private int dx = 2;
 
 	private int								x, y;
 	private BufferedImage					laserImage;
