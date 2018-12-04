@@ -42,14 +42,20 @@ public class GameModel extends JPanel
 	private static final int DRONE_FROZEN_DELAY = 5_000; //5 seconds delay when drone is hit
 	private static final int CLOUD_SPAWN_DELAY = 3_000;
 
+	/**
+	 * constructs model for the game
+	 */
 	public GameModel()
 	{
 		this.setLayout(new BorderLayout());
 		
+		//constructs view with reference to model
 		this.scene = new SceneComponent(this);
 		this.add(scene, BorderLayout.CENTER);
 
 //		scene.displayStartMenu();
+		
+		//start with new data, and full lives
 		wave = 0;
 		spawned = 0;
 		points = 0;
@@ -60,22 +66,31 @@ public class GameModel extends JPanel
 		
 		scene.add(topTools, BorderLayout.NORTH);
 		scene.add(bottomTools, BorderLayout.SOUTH);
-
+		
+		//
+		//initialize all game timers
+		//
+		
+		//moves drone forward when no buttons are pressed
 		droneIdleTimer = new Timer(DRONE_IDLE_DELAY, event ->
 		{
 			scene.droneIdle();
 		});
 		
+		//moves enemies forward at consistent speed
 		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event ->
 		{
 		    scene.moveEnemies();
 		});
-
+		
+		//moves clouds forward
 		cloudMovementTimer = new Timer(CLOUD_MOVEMENT_DELAY, event ->
 		{
 		    scene.moveClouds();
         });
 
+		//spawns enemies once every second until the wave number is reached
+		//no more than 6 enemies will be spawned each wave
 		spawnTimer = new Timer(ENEMY_SPAWN_DELAY, event ->
 		{
         	if (spawned < wave && spawned < 7)
@@ -89,9 +104,9 @@ public class GameModel extends JPanel
 				spawnTimer.stop();
 			}
         });
-
 		spawnTimer.setInitialDelay(0);
 		
+		//sets the time until the next wave begins
 		waveTimer = new Timer(NEW_WAVE_DELAY, event ->
 		{
 			scene.removeAllEnemies();
@@ -102,9 +117,9 @@ public class GameModel extends JPanel
 			
 			waveTimer.setDelay( (wave * 1_000) + NEW_WAVE_DELAY );
 		});
-
 		waveTimer.setInitialDelay(1000);
 		
+		//determines how long the drone is frozen for after collision
 		freezeTimer = new Timer(DRONE_FROZEN_DELAY, event ->
 		{
 			if (state == DRONE_FROZEN) {
@@ -112,17 +127,20 @@ public class GameModel extends JPanel
 			}
 		});
 		
+		//adds a point every 90 seconds
 		pointTimer = new Timer(ADD_POINT_DELAY, event ->
 		{
 			topTools.setPoints(++points);
 		});
 
+		//spawns a new cloud every so often
 		cloudTimer = new Timer(CLOUD_SPAWN_DELAY, event ->
 		{
 			Random rand = new Random();
 			scene.addCloud(new CloudShape(500,rand.nextInt(400)));
 		});
 
+		//start timers
 		waveTimer.start();
 		droneIdleTimer.start();
 		enemyMovementTimer.start();
@@ -130,15 +148,21 @@ public class GameModel extends JPanel
 		pointTimer.start();
 		cloudTimer.start();
 		
+		//set state to begin game
 		state = PLAYING;
 	}
 	
-	
+	/**
+	 * @return state
+	 */
 	public int getState()
 	{
 		return state;
 	}
 	
+	/**
+	 * @param newState state to change model to
+	 */
 	public void changeState(int newState)
 	{
 		if (newState == GAME_OVER)
