@@ -14,13 +14,13 @@ public class GameInstance extends JFrame
 	private Timer 						timer;
 	private GameModel					model;
 	
-	private static final int DELAY = 10;
-
+	private static final int REPAINT_DELAY = 5;
+    
 	public GameInstance()
 	{
 		super();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    
 		model = new GameModel();
 		 
 		this.addKeyListener(new KeyAdapter()
@@ -29,7 +29,7 @@ public class GameInstance extends JFrame
             public void keyPressed(KeyEvent e)
 			{
         	   super.keyTyped(e);
-
+    
         	   int keyCode = e.getKeyCode();
 
                if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
@@ -57,9 +57,8 @@ public class GameInstance extends JFrame
 		this.setSize(500, 550);
 		this.add(model);
 		this.setVisible(true);
-		//scene.displayStartMenu();
 
-		timer = new Timer(DELAY, event ->
+		timer = new Timer(REPAINT_DELAY, event ->
 		{
 		    model.repaint();
 		});

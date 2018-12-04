@@ -5,12 +5,15 @@
 
 import javax.swing.*;
 
-import javafx.scene.input.KeyCode;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+/**
+ * 
+ * Model class for MVC
+ *
+ */
 public class GameModel extends JPanel
 {
 	private SceneComponent scene;
@@ -22,7 +25,7 @@ public class GameModel extends JPanel
 	//timer variables
 	private Timer spawnTimer, droneIdleTimer, enemyMovementTimer, freezeTimer, waveTimer, pointTimer, cloudTimer, cloudMovementTimer;
 
-	//final int variables
+	//state values
 	public static final int START_MENU = 1;
 	public static final int PLAYING = 2;
 	public static final int GAME_OVER = 0;
@@ -46,6 +49,7 @@ public class GameModel extends JPanel
 		this.scene = new SceneComponent(this);
 		this.add(scene, BorderLayout.CENTER);
 
+//		scene.displayStartMenu();
 		wave = 0;
 		spawned = 0;
 		points = 0;
@@ -56,7 +60,6 @@ public class GameModel extends JPanel
 		
 		scene.add(topTools, BorderLayout.NORTH);
 		scene.add(bottomTools, BorderLayout.SOUTH);
-		scene.repaint();
 
 		droneIdleTimer = new Timer(DRONE_IDLE_DELAY, event ->
 		{
@@ -66,13 +69,11 @@ public class GameModel extends JPanel
 		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event ->
 		{
 		    scene.moveEnemies();
-		    scene.repaint();
 		});
 
 		cloudMovementTimer = new Timer(CLOUD_MOVEMENT_DELAY, event ->
 		{
 		    scene.moveClouds();
-		    scene.repaint();
         });
 
 		spawnTimer = new Timer(ENEMY_SPAWN_DELAY, event ->
@@ -106,8 +107,9 @@ public class GameModel extends JPanel
 		
 		freezeTimer = new Timer(DRONE_FROZEN_DELAY, event ->
 		{
-			if (state == DRONE_FROZEN)
-				state = PLAYING;
+			if (state == DRONE_FROZEN) {
+				this.changeState(DRONE_IDLE);
+			}
 		});
 		
 		pointTimer = new Timer(ADD_POINT_DELAY, event ->
@@ -139,11 +141,11 @@ public class GameModel extends JPanel
 	
 	public void changeState(int newState)
 	{
-		if (newState == 0)
+		if (newState == GAME_OVER)
 		{
 			state = GAME_OVER;
 		}
-		else if (newState == 1)
+		else if (newState == PLAYING)
 		{
 			state = PLAYING;
 		}
@@ -189,6 +191,9 @@ public class GameModel extends JPanel
 		freezeTimer.stop();
 		waveTimer.stop();
 		pointTimer.stop();
+		droneIdleTimer.stop();
+		cloudTimer.stop();
+		cloudMovementTimer.stop();
 	}
 
 	public void crash()
