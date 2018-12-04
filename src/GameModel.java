@@ -152,6 +152,8 @@ public class GameModel extends JPanel
 		state = PLAYING;
 	}
 	
+	
+	
 	/**
 	 * @return state
 	 */
@@ -180,11 +182,18 @@ public class GameModel extends JPanel
 		}
 	}
 	
+	/**
+	 * @param keyCode code to send to the view for shape movement
+	 */
 	public void moveDrone(int keyCode)
     {
         scene.moveDrone(keyCode);
     }
 	
+	/**
+	 * sets the drone to the idle state
+	 * and begins pushing it forward in the view
+	 */
 	public void startDroneIdle() {
 		if (state == PLAYING)
         {
@@ -193,12 +202,19 @@ public class GameModel extends JPanel
         }
 	}
 
+	/**
+	 * takes the drone out of the idle state
+	 * - used for when user presses an arrowkey
+	 */
 	public void stopDroneIdle()
 	{
 		state = PLAYING;
 		droneIdleTimer.stop();
 	}
 
+	/**
+	 * ends the game
+	 */
 	public void gameOver()
 	{
 		System.out.println("Game Over!");
@@ -208,6 +224,9 @@ public class GameModel extends JPanel
 		scene.displayGameOver();
 	}
 	
+	/**
+	 * stops all timers at once to end the game
+	 */
 	public void stopAllTimers()
 	{
 		spawnTimer.stop();
@@ -220,16 +239,30 @@ public class GameModel extends JPanel
 		cloudMovementTimer.stop();
 	}
 
+	/**
+	 * collision handler:
+	 * when the drone collides with an enemy the user
+	 * loses a life
+	 * if the user has no remaining lives
+	 * then gameOver() is called.
+	 * 
+	 * if the user still has lives left
+	 * then the drone is frozen for 5 seconds and cannot move
+	 * or shoot lasers
+	 */
 	public void crash()
 	{
+		//lose life
 		bottomTools.loseLife();
 		lives--;
 		
+		//stop idle
 		if (state == DRONE_IDLE)
 		{
 			this.stopDroneIdle();
 		}
 		
+		//check for 0 lives and end game if necessary
 		if (lives == 0)
 		{
 			this.gameOver();
