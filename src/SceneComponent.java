@@ -29,6 +29,12 @@ public class SceneComponent extends JComponent
 
     private int laserStart;
 
+    /**
+     * Initializes all the arrays used to contains shapes
+     * as well as the images used for the background
+     *
+     * @param model
+     */
     public SceneComponent(GameModel model)
     {
     	this.setLayout(new BorderLayout());
@@ -48,10 +54,21 @@ public class SceneComponent extends JComponent
         }
     }
 
+    /**
+     * Adds enemy into the enemy arraylist
+     * @param enemy
+     * @return boolean value
+     */
     public boolean addEnemy(EnemyShape enemy)
     {
     	return enemies.add(enemy);
     }
+
+    /**
+     * Removes enemy into the enemy arraylist
+     * @param enemy
+     * @return returns boolean
+     */
 
     public boolean removeEnemy(EnemyShape enemy)
     {
@@ -59,11 +76,19 @@ public class SceneComponent extends JComponent
     	return success;
     }
 
+    /**
+     * Removes all Enemies from array
+     */
+
     public void removeAllEnemies()
     {
     	enemies.clear();
     }
-    
+
+    /**
+     * Sets the Idle movement of the drone
+     */
+
     public void droneIdle()
     {
     	if (model.getState() != GameModel.DRONE_IDLE)
@@ -74,7 +99,10 @@ public class SceneComponent extends JComponent
     	drone.move();
     }
 
-
+    /**
+     * Moves all enemies and checks for collision with
+     * drone or laser.
+     */
     public void moveEnemies()
     {
     	if (model.getState() == GameModel.GAME_OVER)
@@ -105,6 +133,9 @@ public class SceneComponent extends JComponent
         }
     }
 
+    /**
+     * Moves clouds in background
+     */
     public void moveClouds()
     {
         for (int i = cloudShapes.size() - 1; i >= 0; i--)
@@ -119,6 +150,10 @@ public class SceneComponent extends JComponent
         cloudShapes.add(c);
     }
 
+    /**
+     * Moves the drone by setting dX and dY in the drone class
+     * @param keyCode keycode is passed from GameInstance
+     */
     public void moveDrone(int keyCode)
     {
         if (model.getState() != GameModel.PLAYING && model.getState() != GameModel.DRONE_IDLE)
@@ -194,6 +229,9 @@ public class SceneComponent extends JComponent
         });
     }
 
+    /**
+     * Displays game over text after loss
+     */
     public void displayGameOver ()
     {
         JLabel gameOverLabel = new JLabel();
@@ -206,6 +244,10 @@ public class SceneComponent extends JComponent
         setVisible(true);
     }
 
+    /**
+     * Iterates though all arrays and draws the shapes
+     * @param g
+     */
     public void paintComponent(Graphics g)
     {
 
