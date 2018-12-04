@@ -1,6 +1,10 @@
+//CS151 Group Project
+//Ryan
+//Sebastian
+//Ezana
+
 /**
- A program that allows users to edit a scene composed
- of items.
+    Main Game Tester
  */
 public class GameTester
 {
@@ -8,10 +12,6 @@ public class GameTester
     {    	
     	new GameInstance();
     }
-
-
-
-
 }
 
 

@@ -1,11 +1,18 @@
+//CS151 Group Project
+//Ryan
+//Sebastian
+//Ezana
+
 import javax.swing.*;
 import java.awt.*;
 
-public class TopToolBar extends JPanel {
-	private JLabel							points;
+public class TopToolBar extends JPanel
+{
+	private JLabel points;
 	private Clock clock;
 	
-	public TopToolBar() {
+	public TopToolBar()
+	{
 		this.setLayout(new BorderLayout());
 		
 		points = new JLabel("Points: 0");
@@ -17,15 +24,18 @@ public class TopToolBar extends JPanel {
 	}
 	
 	
-	public void setPoints(int num) {
+	public void setPoints(int num)
+	{
 		points.setText("Points: " + num);
 	}
 	
-	public void pauseGameClock() {
+	public void pauseGameClock()
+	{
 		clock.stop();
 	}
 	
-	public void resumeGameClock() {
+	public void resumeGameClock()
+	{
 		clock.start();
 	}
 }

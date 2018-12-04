@@ -1,27 +1,32 @@
+//CS151 Group Project
+//Ryan
+//Sebastian
+//Ezana
+
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
-public class GameInstance extends JFrame {
+public class GameInstance extends JFrame
+{
 	private Timer 						timer;
 	private SceneComponent scene;
-	 
 	private static final int DELAY = 10;
 
-
-	public GameInstance() {
+	public GameInstance()
+	{
 		super();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
 		scene = new SceneComponent();
-
 		 
-		this.addKeyListener(new KeyAdapter() {
+		this.addKeyListener(new KeyAdapter()
+		{
 			@Override
-           public void keyPressed(KeyEvent e) {
+            public void keyPressed(KeyEvent e)
+			{
         	   super.keyTyped(e);
 
         	   int keyCode = e.getKeyCode();
@@ -35,8 +40,10 @@ public class GameInstance extends JFrame {
            }
 			
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void keyReleased(KeyEvent e)
+			{
 				int keyCode = e.getKeyCode();
+
 				if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
 	            		   || keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT
 							|| keyCode == KeyEvent.VK_SPACE)
@@ -50,16 +57,14 @@ public class GameInstance extends JFrame {
 		this.setSize(500, 550);
 		this.setVisible(true);
 
-
+		//scene.displayStartMenu();
 
 		timer = new Timer(DELAY, event ->
 		{
-
-
 		    scene.repaint();
 		});
+
 		timer.start();
 	}
-
-	}
+}
 

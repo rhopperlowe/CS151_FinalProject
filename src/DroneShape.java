@@ -1,3 +1,8 @@
+//CS151 Group Project
+//Ryan
+//Sebastian
+//Ezana
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -5,21 +10,25 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 
-public class DroneShape extends JComponent implements SceneShape {
-
+public class DroneShape extends JComponent implements SceneShape
+{
     private int x, y;
     private BufferedImage droneimage;
     private int dy = 1;
     private int dx = 1;
     private Polygon hitbox;
 
-
-    public DroneShape(int x , int y){
+    public DroneShape(int x , int y)
+    {
         this.x = x;
         this.y = y;
-        try {
+
+        try
+        {
             droneimage = ImageIO.read(new File("resources/drone.png"));
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
 
@@ -28,51 +37,64 @@ public class DroneShape extends JComponent implements SceneShape {
     }
 
     @Override
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2)
+    {
         g2.drawImage(droneimage, x, y, 50, 50, null);
         generateHitBox();
-      g2.drawPolygon(hitbox);
+        //g2.drawPolygon(hitbox); // used for debugging collision
     }
 
     @Override
-    public boolean contains(Polygon p) {
+    public boolean contains(Polygon p)
+    {
         return hitbox.intersects(p.getBounds2D());
     }
-    
-    
-    public void setDy(int dy) {
+
+    public void setDy(int dy)
+    {
         this.dy = dy;
     }
     
-    public void setDx(int dx) {
+    public void setDx(int dx)
+    {
     	this.dx = dx;
     }
 
-    public void moveX() {
+    public void moveX()
+    {
 		x += dx;
 	}
 
-	public void moveY() {
+	public void moveY()
+    {
 		y += dy;
 	}
 	
-	public int getX() {
+	public int getX()
+    {
 		return x;
 	}
 	
-	public int getY() {
+	public int getY()
+    {
 		return y;
 	}
 	
 	@Override
-	public void move() {
+	public void move()
+    {
 		if (dx != 0) 
-			this.moveX();
+        {
+            this.moveX();
+        }
 		if (dy != 0)
-			this.moveY();
+        {
+            this.moveY();
+        }
 	}
 
-	public void generateHitBox(){
+	public void generateHitBox()
+    {
         hitbox.reset();
         hitbox.addPoint(x, y+8);
         hitbox.addPoint(x+50,y+8);
@@ -83,7 +105,8 @@ public class DroneShape extends JComponent implements SceneShape {
         hitbox.addPoint(x+10,y+30);
     }
 
-    public Polygon getHitbox(){
+    public Polygon getHitbox()
+    {
         return hitbox;
     }
 }

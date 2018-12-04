@@ -1,3 +1,8 @@
+//CS151 Group Project
+//Ryan
+//Sebastian
+//Ezana
+
 import javax.swing.*;
 
 import javafx.scene.input.KeyCode;
@@ -6,34 +11,36 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-public class GameModel {
-	private SceneComponent 				scene;
+public class GameModel
+{
+	private SceneComponent scene;
 	private BottomToolBar bottomTools;
 	private TopToolBar topTools;
-	private int							state;
 
-	private Timer						spawnTimer, droneIdleTimer, enemyMovementTimer, 
-										freezeTimer, waveTimer, pointTimer, cloudTimer,
-                                        cloudMovementTimer;
+	private int state, wave, lives, points, spawned;
 
-	private int							wave, lives, points, spawned;
-	
+	//timer variables
+	private Timer spawnTimer, droneIdleTimer, enemyMovementTimer, freezeTimer, waveTimer, pointTimer, cloudTimer, cloudMovementTimer;
+
+	//final int variables
 	public static final int START_MENU = 1;
 	public static final int PLAYING = 2;
 	public static final int GAME_OVER = 0;
 	public static final int DRONE_FROZEN = 3;
 	public static final int DRONE_IDLE = 4;
-	
+
+	//final int variables for delay
 	private static final int DRONE_IDLE_DELAY = 20;
 	private static final int MOVEMENT_DELAY = 10;
 	private static final int CLOUD_MOVEMENT_DELAY = 20;
 	private static final int ENEMY_SPAWN_DELAY = 1_000;
 	private static final int NEW_WAVE_DELAY = 8_000;
 	private static final int ADD_POINT_DELAY = 90_000;
-	private static final int DRONE_FROZEN_DELAY = 2_000;
+	private static final int DRONE_FROZEN_DELAY = 5_000; //5 seconds delay when drone is hit
 	private static final int CLOUD_SPAWN_DELAY = 3_000;
 
-	public GameModel(SceneComponent scene) {
+	public GameModel(SceneComponent scene)
+	{
 		this.scene = scene;
 
 		wave = 0;
@@ -47,55 +54,66 @@ public class GameModel {
 		scene.add(topTools, BorderLayout.NORTH);
 		scene.add(bottomTools, BorderLayout.SOUTH);
 		scene.repaint();
-		
 
-		droneIdleTimer = new Timer(DRONE_IDLE_DELAY, event -> {
+		droneIdleTimer = new Timer(DRONE_IDLE_DELAY, event ->
+		{
 			scene.droneIdle();
 		});
 		
-		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event -> {
+		enemyMovementTimer = new Timer(MOVEMENT_DELAY, event ->
+		{
 		    scene.moveEnemies();
 		    scene.repaint();
 		});
 
-		cloudMovementTimer = new Timer(CLOUD_MOVEMENT_DELAY, event ->{
+		cloudMovementTimer = new Timer(CLOUD_MOVEMENT_DELAY, event ->
+		{
 		    scene.moveClouds();
 		    scene.repaint();
         });
 
-		spawnTimer = new Timer(ENEMY_SPAWN_DELAY, event -> {
-        	if (spawned < wave && spawned < 7) {
+		spawnTimer = new Timer(ENEMY_SPAWN_DELAY, event ->
+		{
+        	if (spawned < wave && spawned < 7)
+        	{
         		Random rand = new Random();
         		scene.addEnemy(new EnemyShape(500,rand.nextInt(400))); //creates overlapping
         		spawned++;
         	}
         	else
-        		spawnTimer.stop();
+			{
+				spawnTimer.stop();
+			}
         });
+
 		spawnTimer.setInitialDelay(0);
 		
-		waveTimer = new Timer(NEW_WAVE_DELAY, event -> {
+		waveTimer = new Timer(NEW_WAVE_DELAY, event ->
+		{
 			scene.removeAllEnemies();
 			bottomTools.setWave(++wave);
 			
 			spawned = 0;
 			spawnTimer.restart();
 			
-			waveTimer.setDelay((wave * 1_000) + NEW_WAVE_DELAY);
-//            spawnEnemies(wave);
+			waveTimer.setDelay( (wave * 1_000) + NEW_WAVE_DELAY );
 		});
+
 		waveTimer.setInitialDelay(1000);
 		
-		freezeTimer = new Timer(DRONE_FROZEN_DELAY, event -> {
+		freezeTimer = new Timer(DRONE_FROZEN_DELAY, event ->
+		{
 			if (state == DRONE_FROZEN)
 				state = PLAYING;
 		});
 		
-		pointTimer = new Timer(ADD_POINT_DELAY, event -> {
+		pointTimer = new Timer(ADD_POINT_DELAY, event ->
+		{
 			topTools.setPoints(++points);
 		});
 
-		cloudTimer = new Timer(CLOUD_SPAWN_DELAY, event -> {
+		cloudTimer = new Timer(CLOUD_SPAWN_DELAY, event ->
+		{
 			Random rand = new Random();
 			scene.addCloud(new CloudShape(500,rand.nextInt(400)));
 		});
@@ -111,52 +129,68 @@ public class GameModel {
 	}
 	
 	
-	public int getState() {
+	public int getState()
+	{
 		return state;
 	}
 	
-	public void changeState(int newState) {
+	public void changeState(int newState)
+	{
 		if (newState == 0)
+		{
 			state = GAME_OVER;
+		}
 		else if (newState == 1)
+		{
 			state = PLAYING;
-		else if (newState == DRONE_IDLE) {
+		}
+		else if (newState == DRONE_IDLE)
+		{
 			state = DRONE_IDLE;
 			droneIdleTimer.restart();
 		}
 	}
 
-	public void stopDroneIdle() {
+	public void stopDroneIdle()
+	{
 		state = PLAYING;
 		droneIdleTimer.stop();
 	}
 
-	public void gameOver() {
+	public void gameOver()
+	{
 		System.out.println("Game Over!");
 		this.stopAllTimers();
 		topTools.pauseGameClock();
 		state = GAME_OVER;
+		scene.displayGameOver();
 	}
 	
-	public void stopAllTimers() {
+	public void stopAllTimers()
+	{
 		spawnTimer.stop();
 		enemyMovementTimer.stop();
 		freezeTimer.stop();
 		waveTimer.stop();
 		pointTimer.stop();
-		cloudMovementTimer.stop();
 	}
 
-	public void crash() {
+	public void crash()
+	{
 		bottomTools.loseLife();
 		lives--;
 		
 		if (state == DRONE_IDLE)
+		{
 			this.stopDroneIdle();
+		}
 		
 		if (lives == 0)
+		{
 			this.gameOver();
-		else if (state == PLAYING) {
+		}
+		else if (state == PLAYING)
+		{
 			state = DRONE_FROZEN;
 			freezeTimer.restart();
 		}
